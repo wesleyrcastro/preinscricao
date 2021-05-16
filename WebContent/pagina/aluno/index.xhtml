@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" 
+xmlns:s="http://jboss.org/seam/faces">
+
+	<ui:define name="titulo">Cadastre-se na Brasiliafisio</ui:define>
+
+	<ui:define name="corpo">
+		<br />
+
+		<h:form id="frmDado">
+			<p:focus id="focus" for="cpf"/>
+			<p:growl redisplay="false" sticky="false" life="30000"/>
+			<h2>Cadastre-se na BrasiliaFisio</h2>
+			<p:fieldset>
+				<p id="textoPaginaInicial">Antes de se inscrever nos cursos, você deve se cadastrar na BrasiliaFisio.</p>
+				<p id="textoPaginaInicial">Para quem é cadastrado, digite seu CPF e clique em Entrar. Aluno novo clique em Cadastre-se.</p>
+		       	&nbsp; &nbsp;
+		        <h:panelGrid columns="4">
+					<h:outputLabel value="Digite o CPF: " for="cpf" />
+					<p:inputMask id="cpf" value="#{alunoBean.aluno.cpf}" mask="999.999.999-99" required="true"
+						requiredMessage="CPF obrigatório" />
+
+					<p:commandButton value="Entrar" icon="ui-icon-folder-open" action="#{alunoBean.pesquisaAluno}"
+						update=":frmDado" />
+					<p:commandButton value="Cadastre-se" action="#{alunoBean.novo}" icon="ui-icon-check" process="@this" rendered="#{!alunoBean.alunoExiste}"/>
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<p:outputPanel id="frmResultado" autoUpdate="true">
+			<p:growl redisplay="false"/>
+			<h:form rendered="#{alunoBean.alunoExiste}">
+				<h3>Você já está cadastrado. Para fazer sua pré-inscrição, digite sua senha:</h3>
+				<p>(Se você esqueceu sua senha, entre em contato com a BrasiliaFisio no e-mail brasiliafisio@gmail.com ou telefone (61) 9633-0077 para redefini-la.)</p>
+				<br />
+				<h:panelGrid columns="4">
+					<div align="left">
+						<p:password value="#{alunoBean.senhaAluno}" required="true" requiredMessage="Senha obrigatório" />
+
+						<p:commandButton value="Clique Aqui" icon="ui-icon-check" action="#{alunoBean.carregaAluno}" />
+					</div>
+				</h:panelGrid>
+				<br />
+			</h:form>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>

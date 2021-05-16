@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets" 
+xmlns:s="http://jboss.org/seam/faces">
+
+	<ui:define name="titulo">Pré-inscrição</ui:define>
+
+	<ui:define name="corpo">
+		<br />
+		<h:form id="frmDado">
+			<p:growl redisplay="false" sticky="false" life="30000"/>
+
+			<div align="right">
+				<p:commandButton value="Sair" icon="ui-icon-close" action="#{alunoBean.sairInscricao}" immediate="true"
+					rendered="#{alunoBean.alunoExiste}" />
+			</div>
+
+			<h2>
+				<h:outputText value="Pré-inscrição" />
+			</h2>
+
+			<p:fieldset id="enviar" legend="Dados da Pré-inscrição">
+				<p>Prezado aluno, mantenha seus dados de cadastro atualizados. Estes serão importantes para emissão do seu
+					certificado.</p>
+				&nbsp; &nbsp;
+		    <h:panelGrid columns="2">
+
+					<h:outputLabel value="* Aluno: " for="aluno" />
+					<p:inputText id="aluno" value="#{alunoBean.aluno.nome}" readonly="true" style="width:350px" />
+
+					<h:outputLabel value="* Curso: " />
+					<p:selectOneMenu value="#{alunoBean.inscricao.curso}" required="true" requiredMessage="Curso obrigatório">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{alunoBean.cursos}" var="curso" itemValue="#{curso}" itemLabel="#{curso.nome}" />
+					</p:selectOneMenu>
+					
+					<h:outputLabel value="* Data/Hora: " for="data" />
+					<p:calendar id="data" pattern="dd/MM/yyyy - HH:mm:ss" value="#{alunoBean.inscricao.data.time}" locale="pt_BR"
+						timeZone="America/Sao_Paulo" disabled="true" />
+					</h:panelGrid>	
+					
+					<h:panelGroup>
+					<h:outputLabel value="* Como Soube do Curso:" />
+						<h:panelGrid columns="3">	
+						<p:selectOneMenu id="indicacao" value="#{alunoBean.inscricao.indicacao}" required="true" requiredMessage="Como soube do curso. Obrigatório" >
+							<p:ajax listener="#{alunoBean.toggleOutrosStatus}" update="outros" />
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+							<f:selectItems value="#{alunoBean.indicacoes}" var="i" itemValue="#{i}" itemLabel="#{i.descricao}" />
+						</p:selectOneMenu>
+						
+						<p:inputText id="outros" value="#{alunoBean.inscricao.outros}" placeholder="Outros: preencha aqui." style="width:154px" maxlength="45" disabled="#{!alunoBean.isOutrosSelecionado}" />
+						</h:panelGrid>
+					</h:panelGroup>
+
+				<h:panelGrid columns="2">
+					<h:outputLabel id="descricao" />
+					<p:inputTextarea counter="descricao" value="#{alunoBean.inscricao.obsAluno}" rows="4" cols="50" maxlength="120"
+						counterTemplate="{0} Observação: " autoResize="false" style="width: 350px"/>
+				</h:panelGrid>
+				<br />
+				<div align="left">
+					<h3 id="h33">A participação nos cursos da BrasiliaFisio obedecerá aos seguintes critérios:</h3>
+					
+					<div id="textoTermo">
+						<ol type="1" style="list-style-position: inside" class="termos">
+							<li>Os interessados em participar dos cursos deverão fazer sua pré-inscrição no site da instituição -
+								www.brasiliafisio.com.br;</li>
+
+							<li>Deverão aguardar por e-mail a confirmação da pré-inscrição, onde conterá as orientações para a inscrição
+								do curso pretendido;</li>
+
+							<li>O aluno receberá sua confirmação de inscrição, após o pagamento da 1° parcela do curso desejado, através de e-mail;</li>
+
+							<li>A BrasiliaFisio se reserva o direito de alterar os horários e local do curso ou cancelar o mesmo por
+								motivos alheios à sua vontade, com reembolso total do valor pago;</li>
+
+							<li>A inscrição no curso é de caráter pessoal e intransferível;</li>
+
+							<li>Os certificados de participação no curso serão entregues no último dia de aula, ou enviados por correio,
+								para aqueles que freqüentarem 75% das horas oferecidas;</li>
+
+							<li>É expressamente proibido fotografar, gravar, filmar e usar notebook, netbook ou tablet durante o curso;</li>
+							
+							<li>O aluno autoriza o uso da sua imagem em todo e qualquer material entre fotos, vídeos, documentos, entre outros meios de 
+								comunicação para ser utilizado em campanhas promocionais e institucionais da BrasiliaFisio;</li>
+
+							<li>Esse curso, exceto a PÓS-GRADUAÇÃO, não poderá ser usado para abater no IMPOSTO DE RENDA, por se tratar
+								de curso de extensão, não vinculado a Instituição de Nível Superior como assim rege a legislação vigente
+								brasileira, conforme Lei nº 9.250, de 1995, art. 8º, II, "b"; Lei nº 12.469, de 2011, art. 3º; RIR/1999, 
+                                art. 81; IN SRF nº 15, de 2001, art. 39;</li>
+
+							<li>Caso haja impedimento para o comparecimento no curso, por parte do aluno, os critérios de reembolso
+								serão os seguintes.
+
+								<ol type="A" style="padding-left: 30px">
+									<li>Se o inscrito não comparecer à primeira aula, a Brasiliafisio se reserva o direito de reter 50% do
+										valor da primeira parcela paga, para cobrir os gastos realizados na organização do curso;</li>
+
+									<li>O pedido de reembolso deve ser encaminhado por escrito para o seguinte e-mail: brasiliafisio@gmail.com
+										constando os dados bancários do aluno: banco (com seu respectivo número), agência e conta corrente;</li>
+
+									<li>O reembolso somente será efetuado após a conclusão do curso.</li>
+								</ol>
+							</li>
+							<br />
+							<p>As partes elegem o foro da Cidade de Brasíla DF, para dirimirem quaisquer quesitos não constantes deste
+								instrumento.</p>
+						</ol>
+						<br />
+					</div>
+				</div>
+
+				<br />
+
+				<h:panelGrid columns="6">
+					<h:outputLabel value="* Li, e concordo:" for="termo"
+						title="Declaro ter lido e estar de acordo com os termos apresentados" />
+					<p:selectBooleanCheckbox id="termo" value="#{alunoBean.inscricao.termo}" required="true"
+						requiredMessage="Termo obrigatório">
+						<f:validator validatorId="RequiredCheckboxValidator" />
+					</p:selectBooleanCheckbox>
+				    &nbsp; &nbsp;
+				    <p:commandButton id="btnInserir" value="Enviar Pré-inscrição" action="#{alunoBean.gravaInscricao}" icon="ui-icon-check"
+						update=":frmDado :frmLista" rendered="#{alunoBean.alunoExiste}">
+						<p:confirm header="Inclusão da Pré-inscrição" message="Confirma a inclusão da Pré-inscrição?" icon="ui-icon-alert" />
+					</p:commandButton>
+
+				</h:panelGrid>
+				
+				<p:blockUI block="enviar" trigger="btnInserir"></p:blockUI>
+			</p:fieldset>
+		</h:form>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="drop">
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+        <p:commandButton value="SIM" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="NÃO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
+		<br /><br />
+		<h:form id="frmFiltro">
+			<p:growl redisplay="false" id="msg"/>
+			<p:fieldset legend="Pesquisa Pré-inscrições">
+				<h:panelGrid columns="2">
+					 <h:outputLabel value="Curso:" for="curso" />
+			          <p:selectOneMenu id="curso" value="#{alunoBean.curso}">
+			            <f:selectItem itemLabel="-- Selecione --" />
+			            <f:selectItems value="#{alunoBean.listaComboComCurso}" var="curso" itemValue="#{curso}" itemLabel="#{curso.nome}" />
+			          </p:selectOneMenu>
+			     </h:panelGrid>
+			          
+			          
+				<h:panelGrid columns="4">			
+					<h:outputLabel value="Mês:" for="mes" />
+					<p:selectOneMenu id="mes" value="#{alunoBean.mes}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{alunoBean.meses}" var="t" itemValue="#{t}" itemLabel="#{t.descricao}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Ano:" for="ano" />
+					<p:selectOneMenu id="ano" value="#{alunoBean.ano}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{alunoBean.anosIncricoes}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<br />
+				<h:panelGrid columns="2">
+					<p:commandButton value="Pesquisar" icon="ui-icon-search" action="#{alunoBean.pesquisaInscricao}" update=":frmFiltro :frmLista" />
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+        <br/>
+		<h:form id="formImprimir" rendered="#{alunoBean.alunoExiste}">
+			<h2>Listagem de Pré-inscrições</h2>
+			<p:commandButton value="Alterar Dados Pessoais" icon="ui-icon-check" action="#{alunoBean.carregaDadosAluno}" />
+		</h:form>
+
+		<h:form id="frmLista" rendered="#{alunoBean.alunoExiste}">
+			<p:growl redisplay="false"/>
+			<p:dataTable value="#{alunoBean.inscricoes}" var="inscricao" paginator="true" rows="5"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowKey="#{inscricao.id}" paginatorPosition="bottom"
+				currentPageReportTemplate="  {startRecord} a {endRecord} no total de {totalRecords} - Página: {currentPage} / {totalPages} "
+				emptyMessage="Nenhuma pré-inscricão cadastrada">
+
+				<p:column headerText="Aluno">
+					<h:outputText value="#{inscricao.aluno.nome}" style="width:170px;word-wrap:break-word;display:block" />
+				</p:column>
+
+				<p:column headerText="Curso" sortBy="#{inscricao.curso.nome}">
+					<h:outputText value="#{inscricao.curso.nome}" escape="false" style="width:160px;word-wrap:break-word;display:block" />
+				</p:column>
+
+				<p:column headerText="Data/Hora" sortBy="#{inscricao.data.time}">
+					<div align="center">
+						<h:outputText value="#{inscricao.data.time}" escape="false" style="width:80px;word-wrap:break-word;display:block">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" locale="pt,BR" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</div>
+				</p:column>
+
+				<p:column headerText="Observação">
+					<h:outputText value="#{inscricao.obsAluno}" escape="false" style="width:160px;word-wrap:break-word;display:block" />
+				</p:column>
+
+				<p:column headerText="Status da Pré-inscrição">
+					<h:outputText value="#{inscricao.obsBrasiliafisio}" escape="false"
+						style="width:160px;word-wrap:break-word;display:block" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
